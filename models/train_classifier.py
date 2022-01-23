@@ -21,6 +21,11 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 
 
 def load_data(database_filepath):
+    """
+    Function to load DataBase from file path to get X,y and categories
+    Input: data base file path
+    OutPut: returns X features , y target and categories 
+    """
     engine = create_engine(f'sqlite:///'+database_filepath)
     df = pd.read_sql_table("new", engine)
     X = df['message']
@@ -30,6 +35,11 @@ def load_data(database_filepath):
 
 
 def tokenize(text):
+    """
+    Function to tokenize messages
+    Input: messages (text)
+    Output: Cleaned lemmatized messages
+    """
     words = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
     lem = []
@@ -41,6 +51,11 @@ def tokenize(text):
     return lem
 
 def build_model():
+    """
+    Function to build amodel , create grid search pipeline
+    Input: N/A
+    Output: the model
+    """
     pipeline = Pipeline([('vect', CountVectorizer(tokenizer=tokenize)),
                 ('tfidf', TfidfTransformer()),
                    ('clf', MultiOutputClassifier(KNeighborsClassifier()))])
@@ -52,6 +67,8 @@ def build_model():
 
 def evaluate_model(model, X_test, Y_test, category_names):
     y_pred = model.predict(X_test)
+    # print(classification_report(y_pred, Y_test.values, target_names=category_names))
+
     print('Accuracy Score: {}'.format(np.mean(Y_test.values == y_pred)))
 
 
