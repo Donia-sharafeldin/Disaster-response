@@ -27,9 +27,9 @@ def load_data(database_filepath):
     OutPut: returns X features , y target and categories 
     """
     engine = create_engine(f'sqlite:///'+database_filepath)
-    df = pd.read_sql_table("new", engine)
+    df = pd.read_sql_table("disaster", engine)
     X = df['message']
-    y = df.drop(['message','original',"id",'original'],axis =1)
+    y = df.drop(['message','original',"id",'genre'],axis =1)
     category_names = y.columns
     return X,y,category_names
 
@@ -67,8 +67,6 @@ def build_model():
 
 def evaluate_model(model, X_test, Y_test, category_names):
     y_pred = model.predict(X_test)
-    # print(classification_report(y_pred, Y_test.values, target_names=category_names))
-
     print('Accuracy Score: {}'.format(np.mean(Y_test.values == y_pred)))
 
 

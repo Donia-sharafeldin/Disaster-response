@@ -25,10 +25,10 @@ def tokenize(text):
     return lem
 
 
-engine = create_engine('sqlite:///../data//dis.db')
-df = pd.read_sql_table('last', engine)
+engine = create_engine('sqlite:///../data//DisasterResponse.db')
+df = pd.read_sql_table('disaster', engine)
 
-model = pickle.load(open('../models/mod.pkl','rb'))
+model = pickle.load(open('../models/classifier.pkl','rb'))
 
 @app.route('/')
 @app.route('/home')
